@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+    <div class="content columns mt-2 mb-2">
+        <div class="column"></div>
+        <section class="column is-flex-grow-2"> <!-- hero is-fullheight -->
+            <h1>Capsules</h1>
+            <% capsules.forEach((capsule) => { %>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="content mb-0">
+                            <p class="title is-4">
+                                <%= capsule.serial %>
+                            </p>
+                        </div>
+                    
+                        <div class="content">
+                            <p class="i-5">
+                                <span class="has-text-weight-medium">Type: </span><%= capsule.type %><br />
+                                <span class="has-text-weight-medium">Status: </span><%= capsule.status %><br />
+                                <span class="has-text-weight-medium">Last Update: </span><%= capsule.last_update %><br />
+                                <span class="has-text-weight-medium">Reuse Count: </span><%= capsule.reuse_count %><br />
+                                <span class="has-text-weight-medium">Water Landings: </span><%= capsule.water_landings %><br />
+                                <span class="has-text-weight-medium">Land Landings: </span><%= capsule.land_landings %><br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            <% }); %>
+        </section>
+        <div class="column"></div>
+    </div>
+</body>
+
+</html>

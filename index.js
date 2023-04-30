@@ -10,6 +10,17 @@ app.set('view engine', 'ejs');
 //     res.sendFile(__dirname+'/views/index.html');
 // });
 
+app.get('/', function (req, res) {
+    axios.get('https://api.spacexdata.com/v4/company')
+        .then(function (response) {
+            // handle success
+            res.render('index', { company: response.data });
+        })
+        .catch(function (error) {
+            res.json({ message: 'Data not found. Please try again later.' });
+        });
+});
+
 app.get('/about', function (req, res) {
     res.sendFile(__dirname+'/views/about.html');
 });
@@ -22,7 +33,8 @@ app.get('/capsules', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/capsules')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            console.log(response.data);
+            res.render('capsules', { capsules: response.data });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -107,17 +119,6 @@ app.get('/capsules/*', function (req, res) {
             } else {
                 return res.json({ message: 'No matching capsules.' });
             }
-        });
-});
-
-app.get('/', function (req, res) {
-    axios.get('https://api.spacexdata.com/v4/company')
-        .then(function (response) {
-            // handle success
-            res.render('index', { company: response.data });
-        })
-        .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
         });
 });
 
