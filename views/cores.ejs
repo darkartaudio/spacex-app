@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cores</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+    <div class="content columns mt-2 mb-2">
+        <div class="column"></div>
+        <section class="column is-flex-grow-2"> <!-- hero is-fullheight -->
+            <h1>Cores</h1>
+
+            <% cores.forEach((core) => { %>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="content mb-0">
+                            <p class="title is-4">
+                                <%= core.serial %>
+                            </p>
+                        </div>
+                    
+                        <div class="content">
+                            <p class="i-5">
+                                <span class="has-text-weight-medium">Status: </span><%= core.status %><br />
+                                <span class="has-text-weight-medium">Last Update: </span><%= core.last_update %><br />
+                                <span class="has-text-weight-medium">Block: </span><%= core.block %><br />
+                                <span class="has-text-weight-medium">Reuse Count: </span><%= core.reuse_count %><br />
+                                <span class="has-text-weight-medium">RTLS Attempts: </span><%= core.rtls_attempts %><br />
+                                <span class="has-text-weight-medium">RTLS Landings: </span><%= core.rtls_landings %><br />
+                                <span class="has-text-weight-medium">ASDS Attempts: </span><%= core.asds_attempts %><br />
+                                <span class="has-text-weight-medium">ASDS Landings: </span><%= core.asds_landings %><br />
+                                <span class="has-text-weight-medium">Launches: </span><br />
+                                <% if (core.launches.length > 0) { %>
+                                    <ul>
+                                        <% core.launches.forEach((launch) => { %>
+                                            <li><%= launch %></li>
+                                        <% }); %>
+                                    </ul>
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            <% }); %>
+        </section>
+        <div class="column"></div>
+    </div>
+</body>
+
+</html>

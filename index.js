@@ -33,7 +33,6 @@ app.get('/capsules', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/capsules')
         .then(function (response) {
             // handle success
-            console.log(response.data);
             res.render('capsules', { capsules: response.data });
         })
         .catch(function (error) {
@@ -69,44 +68,45 @@ app.get('/capsules', function (req, res) {
 app.get('/capsules/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/capsules')
         .then(function (response) {
-            // print req.params, API response
-            // console.log('req.params', req.params); // print an object
-            // console.log('response', response.data); // print an array of capsules
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
+            const capsuleArray = [];
 
             // run a for loop to search based on the key from req.params
-            const capsuleArray = [];
             for (let i in response.data) {
                 let capsule = response.data[i];
-                let userRequest = req.params['0'].split('/'); // ['serial', 'c103'] ['reuse_count', '0']
                 
-                if(userRequest[0].toLowerCase() === 'serial') { // search by serial
-                    if(capsule.serial.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ capsule });
+                if(searchBy.toLowerCase() === 'serial') { // search by serial
+                    if(capsule.serial.toUpperCase() === searchVal.toUpperCase()) {
+                        // return res.json({ capsule });\
+                        capsuleArray.push(capsule);
                     }
-                } else if(userRequest[0].toLowerCase() === 'serial') { // search by id
-                    if(capsule.id.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ capsule });
+                } else if(searchBy.toLowerCase() === 'id') { // search by id
+                    if(capsule.id.toUpperCase() === searchVal.toUpperCase()) {
+                        // return res.json({ capsule });
+                        capsuleArray.push(capsule);
                     }
-                } else if (userRequest[0].toLowerCase() === 'reuse_count') { // search by reuse_count
-                    let countValue = parseInt(userRequest[1]);
+                } else if (searchBy.toLowerCase() === 'reuse_count') { // search by reuse_count
+                    let countValue = parseInt(searchVal);
                     if (capsule.reuse_count === countValue) {
                         capsuleArray.push(capsule);
                     }
-                } else if (userRequest[0].toLowerCase() === 'water_landings') { // search by water_landings
-                    let countValue = parseInt(userRequest[1]);
+                } else if (searchBy.toLowerCase() === 'water_landings') { // search by water_landings
+                    let countValue = parseInt(searchVal);
                     if (capsule.water_landings === countValue) {
                         capsuleArray.push(capsule);
                     }
-                } else if (userRequest[0].toLowerCase() === 'last_update') { // search by last_update
-                    if (capsule.last_update === userRequest[1]) {
+                } else if (searchBy.toLowerCase() === 'last_update') { // search by last_update
+                    if (capsule.last_update === searchVal) {
                         capsuleArray.push(capsule);
                     }
-                } else if (userRequest[0].toLowerCase() === 'status') { // search by status
-                    if (capsule.status === userRequest[1]) {
+                } else if (searchBy.toLowerCase() === 'status') { // search by status
+                    if (capsule.status.toUpperCase() === searchVal.toUpperCase()) {
                         capsuleArray.push(capsule);
                     }
-                } else if (userRequest[0].toLowerCase() === 'type') { // search by type
-                    if (capsule.type === userRequest[1]) {
+                } else if (searchBy.toLowerCase() === 'type') { // search by type
+                    if (capsule.type.toUpperCase() === searchVal.toUpperCase()) {
                         capsuleArray.push(capsule);
                     }
                 } else {
@@ -115,7 +115,8 @@ app.get('/capsules/*', function (req, res) {
             }
             
             if (capsuleArray.length > 0) {
-                return res.json({ capsules: capsuleArray });
+                // return res.json({ capsules: capsuleArray });
+                res.render('capsules', { capsules: capsuleArray, searchBy, searchVal });
             } else {
                 return res.json({ message: 'No matching capsules.' });
             }
@@ -126,7 +127,7 @@ app.get('/cores', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/cores')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            res.render('cores', { cores: response.data });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -161,36 +162,36 @@ app.get('/cores', function (req, res) {
 app.get('/cores/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/cores')
         .then(function (response) {
-            // print req.params, API response
-            // console.log('req.params', req.params); // print an object
-            // console.log('response', response.data); // print an array of cores
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
+            const coreArray = [];
 
             // run a for loop to search based on the key from req.params
-            const coreArray = [];
             for (let i in response.data) {
                 let core = response.data[i];
                 let userRequest = req.params['0'].split('/'); // ['serial', 'c103'] ['reuse_count', '0']
                 
-                if(userRequest[0].toLowerCase() === 'serial') { // search by serial
-                    if(core.serial.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ core });
-                    }
-                } else if(userRequest[0].toLowerCase() === 'last_update') { // search by last_update
-                    if(core.last_update === userRequest[1]) {
+                if(searchBy.toLowerCase() === 'serial') { // search by serial
+                    if(core.serial.toUpperCase() === searchVal.toUpperCase()) {
                         coreArray.push(core);
                     }
-                } else if (userRequest[0].toLowerCase() === 'reuse_count') { // search by reuse_count
-                    let countValue = parseInt(userRequest[1]);
+                } else if(searchBy.toLowerCase() === 'last_update') { // search by last_update
+                    if(core.last_update === searchVal) {
+                        coreArray.push(core);
+                    }
+                } else if (searchBy.toLowerCase() === 'reuse_count') { // search by reuse_count
+                    let countValue = parseInt(searchVal);
                     if (core.reuse_count === countValue) {
                         coreArray.push(core);
                     }
-                } else if (userRequest[0].toLowerCase() === 'rtls_landings') { // search by rtls_landings
-                    let countValue = parseInt(userRequest[1]);
+                } else if (searchBy.toLowerCase() === 'rtls_landings') { // search by rtls_landings
+                    let countValue = parseInt(searchVal);
                     if (core.rtls_landings === countValue) {
                         coreArray.push(core);
                     }
-                } else if(userRequest[0].toLowerCase() === 'status') { // search by status
-                    if(core.status === userRequest[1]) {
+                } else if(searchBy.toLowerCase() === 'status') { // search by status
+                    if(core.status === searchVal) {
                         coreArray.push(core);
                     }
                 } else {
@@ -199,7 +200,7 @@ app.get('/cores/*', function (req, res) {
             }
             
             if (coreArray.length > 0) {
-                return res.json({ cores: coreArray });
+                return res.render('cores', { cores: coreArray, searchBy, searchVal });
             } else {
                 return res.json({ message: 'No matching cores.' });
             }

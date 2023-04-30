@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Capsules</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
@@ -15,6 +15,9 @@
         <div class="column"></div>
         <section class="column is-flex-grow-2"> <!-- hero is-fullheight -->
             <h1>Capsules</h1>
+            <% if (searchBy) { %>
+                <h4><%= searchBy %> = <%= searchVal %></h4>
+            <% } %>
             <% capsules.forEach((capsule) => { %>
                 <div class="card">
                     <div class="card-content">
