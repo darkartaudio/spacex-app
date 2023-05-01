@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payloads</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <style>
+        ul.is-unstyled {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 0 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content columns mt-2 mb-2">
+        <div class="column"></div>
+        <section class="column is-flex-grow-2">
+            <h1>Payloads</h1>
+            <% if (searchBy) { %>
+                <h4><%= searchBy %> = <%= searchVal %></h4>
+            <% } %>
+            <% payloads.forEach((payload) => { %>
+                <hr />
+                <div class="card">
+                    <div class="card-content">
+                        <div class="content">
+                            <p class="i-5">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="media">
+                                            <div class="media-content">
+                                                <p class="title is-4"><%= payload.name %></p>
+                                                <span class="has-text-weight-medium">Type: </span><%= payload.type %><br />
+                                                <span class="has-text-weight-medium">Customers: </span>
+                                                <ul class="is-unstyled">
+                                                    <% payload.customers.forEach((cust) => { %>
+                                                        <li><%= cust %></li>
+                                                    <% }); %>
+                                                </ul>
+                                                <span class="has-text-weight-medium">Manufacturers: </span>
+                                                <ul class="is-unstyled">
+                                                    <% payload.manufacturers.forEach((man) => { %>
+                                                        <li><%= man %></li>
+                                                    <% }); %>
+                                                </ul>
+                                                <span class="has-text-weight-medium">Nationalities: </span>
+                                                <ul class="is-unstyled">
+                                                    <% payload.nationalities.forEach((nat) => { %>
+                                                        <li><%= nat %></li>
+                                                    <% }); %>
+                                                </ul>
+                                                <span class="has-text-weight-medium">NORAD IDs: </span>
+                                                <ul class="is-unstyled">
+                                                    <% payload.norad_ids.forEach((id) => { %>
+                                                        <li><%= id %></li>
+                                                    <% }); %>
+                                                </ul>
+                                                <% if (payload.dragon.capsule) { %>
+                                                    <span class="has-text-weight-medium">Dragon: </span>
+                                                    <ul class="is-unstyled">
+                                                        <li>Capsule: <%= payload.dragon.capsule %></li>
+                                                        <li>Mass Returned (kg/lbs): <%= payload.dragon.mass_returned_kg %>/<%= payload.dragon.mass_returned_lbs %></li>
+                                                        <li>Flight Time (seconds): <%= payload.dragon.flight_time_sec %></li>
+                                                        <li><a href="<%= payload.dragon.manifest %>">Manifest</a></li>
+                                                        <li>Water Landing: <%= payload.dragon.water_landing %></li>
+                                                        <li>Land Landing: <%= payload.dragon.land_landing %></li>
+                                                    </ul>
+                                                <% } %>
+                                                <span class="has-text-weight-medium">Reused: </span><%= payload.reused %><br />
+                                                <span class="has-text-weight-medium">Launch: </span><%= payload.launch %><br />
+                                                <span class="has-text-weight-medium">Mass (kg/lbs): </span><%= payload.mass_kg %>/<%= payload.mass_lbs %><br />
+                                                <span class="has-text-weight-medium">Orbit: </span><%= payload.orbit %><br />
+                                                <span class="has-text-weight-medium">Reference System: </span><%= payload.reference_system %><br />
+                                                <span class="has-text-weight-medium">Regime: </span><%= payload.regime %><br />
+                                                <span class="has-text-weight-medium">Longitude: </span><%= payload.longitude %><br />
+                                                <span class="has-text-weight-medium">Semi-Major Axis (km): </span><%= payload.semi_major_axis_km %><br />
+                                                <span class="has-text-weight-medium">Eccentricity: </span><%= payload.eccentricity %><br />
+                                                <span class="has-text-weight-medium">Periapsis (km): </span><%= payload.periapsis_km %><br />
+                                                <span class="has-text-weight-medium">Apoapsis (km): </span><%= payload.apoapsis_km %><br />
+                                                <span class="has-text-weight-medium">Inclination (deg): </span><%= payload.inclination_deg %><br />
+                                                <span class="has-text-weight-medium">Period (min): </span><%= payload.period_min %><br />
+                                                <span class="has-text-weight-medium">Lifespan (years): </span><%= payload.lifespan_years %><br />
+                                                <span class="has-text-weight-medium">Epoch: </span><%= payload.epoch %><br />
+                                                <span class="has-text-weight-medium">Mean Motion: </span><%= payload.mean_motion %><br />
+                                                <span class="has-text-weight-medium">RAAN: </span><%= payload.raan %><br />
+                                                <span class="has-text-weight-medium">Arg Of Pericenter: </span><%= payload.arg_of_pericenter %><br />
+                                                <span class="has-text-weight-medium">Mean Anomaly: </span><%= payload.mean_anomaly %><br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </section>
+        <div class="column"></div>
+    </div>
+</body>
+
+</html>

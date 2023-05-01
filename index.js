@@ -643,7 +643,7 @@ app.get('/payloads', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/payloads')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            res.render('payloads', { payloads: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -651,28 +651,76 @@ app.get('/payloads', function (req, res) {
 });
 
 // Return a single payload by ID
-app.get('/payloads/:id', function (req, res) {
+// app.get('/payloads/:id', function (req, res) {
+//     axios.get('https://api.spacexdata.com/v4/payloads')
+//         .then(function (response) {
+//             // handle success
+//             let found = false;
+
+//             for (let i in response.data) {
+//                 let payload = response.data[i];
+
+//                 if (payload.id === req.params.id) {
+//                     res.json({ data: response.data[i] });
+//                     found = true;
+//                 }
+//             }
+//             if (!found) {
+//                 res.json({ data: 'Payload does not exist.' });
+//             }
+//         })
+//         .catch(function (error) {
+//             res.json({ message: 'Data not found. Please try again later.' });
+//         });
+// });
+app.get('/payloads/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/payloads')
         .then(function (response) {
-            // handle success
-            let found = false;
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
 
+            // run a for loop to search based on the key from req.params
+            const payloadArray = [];
             for (let i in response.data) {
                 let payload = response.data[i];
-
-                if (payload.id === req.params.id) {
-                    res.json({ data: response.data[i] });
-                    found = true;
+                
+                if(searchBy.toLowerCase() === 'name') { // search by name
+                    if(payload.name.toUpperCase() === searchVal.toUpperCase()) {
+                        payloadArray.push(payload);
+                    }
+                } else if(searchBy.toLowerCase() === 'id') { // search by id
+                    if(payload.id.toUpperCase() === searchVal.toUpperCase()) {
+                        payloadArray.push(payload);
+                    }
+                } else if (searchBy.toLowerCase() === 'lifespan_years') { // search by lifespan_years
+                    let lifespan = parseInt(searchVal);
+                    if (payload.lifespan_years === lifespan) {
+                        payloadArray.push(payload);
+                    }
+                } else if (searchBy.toLowerCase() === 'type') { // search by type
+                    if (payload.type.toUpperCase() === searchVal.toUpperCase()) {
+                        payloadArray.push(payload);
+                    }
+                } else if (searchBy.toLowerCase() === 'orbit') { // search by orbit
+                    if (payload.orbit) {
+                        if (payload.orbit.toUpperCase() === searchVal.toUpperCase()) {
+                            payloadArray.push(payload);
+                        }
+                    }
+                } else {
+                    return res.json({ message: 'Invalid key.' });
                 }
             }
-            if (!found) {
-                res.json({ data: 'Payload does not exist.' });
+            
+            if (payloadArray.length > 0) {
+                return res.render('payloads', { payloads: payloadArray, searchBy, searchVal });
+            } else {
+                return res.json({ message: 'No matching payloads.' });
             }
-        })
-        .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
         });
 });
+
 
 app.get('/roadster', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/roadster')
