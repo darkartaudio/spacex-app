@@ -726,7 +726,6 @@ app.get('/roadster', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/roadster')
         .then(function (response) {
             // handle success
-            console.log(response.data);
             res.render('roadster', { roadster: response.data });
         })
         .catch(function (error) {
@@ -738,7 +737,7 @@ app.get('/rockets', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/rockets')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            res.render('rockets', { rockets: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -746,26 +745,71 @@ app.get('/rockets', function (req, res) {
 });
 
 // Return a rocket by Name
-app.get('/rockets/:name', function (req, res) {
+// app.get('/rockets/:name', function (req, res) {
+//     axios.get('https://api.spacexdata.com/v4/rockets')
+//         .then(function (response) {
+//             // handle success
+//             let found = false;
+
+//             for (let i in response.data) {
+//                 let rocket = response.data[i];
+
+//                 if (rocket.name === req.params.name) {
+//                     res.json({ data: response.data[i] });
+//                     found = true;
+//                 }
+//             }
+//             if (!found) {
+//                 res.json({ data: 'Rocket does not exist.' });
+//             }
+//         })
+//         .catch(function (error) {
+//             res.json({ message: 'Data not found. Please try again later.' });
+//         });
+// });
+app.get('/rockets/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/rockets')
         .then(function (response) {
-            // handle success
-            let found = false;
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
 
+            // run a for loop to search based on the key from req.params
+            const rocketArray = [];
             for (let i in response.data) {
                 let rocket = response.data[i];
-
-                if (rocket.name === req.params.name) {
-                    res.json({ data: response.data[i] });
-                    found = true;
+                
+                if(searchBy.toLowerCase() === 'name') { // search by name
+                    if(rocket.name.toUpperCase() === searchVal.toUpperCase()) {
+                        rocketArray.push(rocket);
+                    }
+                } else if(searchBy.toLowerCase() === 'id') { // search by id
+                    if(rocket.id.toUpperCase() === searchVal.toUpperCase()) {
+                        rocketArray.push(rocket);
+                    }
+                } else if (searchBy.toLowerCase() === 'stages') { // search by stages
+                    let numStagers = parseInt(searchVal);
+                    if (rocket.stages === numStages) {
+                        rocketArray.push(rocket);
+                    }
+                } else if (searchBy.toLowerCase() === 'type') { // search by type
+                    if (rocket.type === searchVal) {
+                        rocketArray.push(rocket);
+                    }
+                } else if (searchBy.toLowerCase() === 'active') { // search by active
+                    if ((rocket.active === true && searchVal.toLowerCase() === 'true') || (rocket.active === false && searchVal.toLowerCase() === 'false')) {
+                        rocketArray.push(rocket);
+                    }
+                } else {
+                    return res.json({ message: 'Invalid key.' });
                 }
             }
-            if (!found) {
-                res.json({ data: 'Rocket does not exist.' });
+            
+            if (rocketArray.length > 0) {
+                return res.render('rockets', { rockets: rocketArray, searchBy, searchVal });
+            } else {
+                return res.json({ message: 'No matching rockets.' });
             }
-        })
-        .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
         });
 });
 
