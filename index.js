@@ -308,7 +308,8 @@ app.get('/dragons', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/dragons')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            console.log(response.data[1].thrusters);
+            res.render('dragons', { dragons: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
