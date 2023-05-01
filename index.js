@@ -561,7 +561,7 @@ app.get('/launchpads', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/launchpads')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            res.render('launchpads', { launchpads: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -596,35 +596,34 @@ app.get('/launchpads', function (req, res) {
 app.get('/launchpads/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/launchpads')
         .then(function (response) {
-            // print req.params, API response
-            // console.log('req.params', req.params); // print an object
-            // console.log('response', response.data); // print an array of launchpads
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
 
             // run a for loop to search based on the key from req.params
             const launchpadArray = [];
             for (let i in response.data) {
                 let launchpad = response.data[i];
-                let userRequest = req.params['0'].split('/'); // ['serial', 'c103'] ['reuse_count', '0']
                 
-                if(userRequest[0].toLowerCase() === 'full_name') { // search by full_name
-                    if(launchpad.full_name.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ launchpad });
+                if(searchBy.toLowerCase() === 'full_name') { // search by full_name
+                    if(launchpad.full_name.toUpperCase() === searchVal.toUpperCase()) {
+                        launchpadArray.push(launchpad);
                     }
-                } else if(userRequest[0].toLowerCase() === 'id') { // search by id
-                    if(launchpad.id.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ launchpad });
+                } else if(searchBy.toLowerCase() === 'id') { // search by id
+                    if(launchpad.id.toUpperCase() === searchVal.toUpperCase()) {
+                        launchpadArray.push(launchpad);
                     }
-                } else if(userRequest[0].toLowerCase() === 'region') { // search by region
-                    if(launchpad.region.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ launchpad });
+                } else if(searchBy.toLowerCase() === 'region') { // search by region
+                    if(launchpad.region.toUpperCase() === searchVal.toUpperCase()) {
+                        launchpadArray.push(launchpad);
                     }
-                }else if (userRequest[0].toLowerCase() === 'launch_attempts') { // search by launch_attempts
-                    let launchAttempts = parseInt(userRequest[1]);
+                }else if (searchBy.toLowerCase() === 'launch_attempts') { // search by launch_attempts
+                    let launchAttempts = parseInt(searchVal);
                     if (launchpad.launch_attempts === launchAttempts) {
                         launchpadArray.push(launchpad);
                     }
-                } else if (userRequest[0].toLowerCase() === 'status') { // search by status
-                    if (launchpad.status.toUpperCase() === userRequest[1].toUpperCase()) {
+                } else if (searchBy.toLowerCase() === 'status') { // search by status
+                    if (launchpad.status.toUpperCase() === searchVal.toUpperCase()) {
                         launchpadArray.push(launchpad);
                     }
                 } else {
@@ -633,9 +632,9 @@ app.get('/launchpads/*', function (req, res) {
             }
             
             if (launchpadArray.length > 0) {
-                return res.json({ launchpads: launchpadArray });
+                res.render('launchpads', { launchpads: launchpadArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching launchpads.' });
+                res.json({ message: 'No matching launchpads.' });
             }
         });
 });
