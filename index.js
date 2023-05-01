@@ -401,7 +401,7 @@ app.get('/landpads', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/landpads')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            res.render('landpads', { landpads: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -436,35 +436,34 @@ app.get('/landpads', function (req, res) {
 app.get('/landpads/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/landpads')
         .then(function (response) {
-            // print req.params, API response
-            // console.log('req.params', req.params); // print an object
-            // console.log('response', response.data); // print an array of landpads
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
 
             // run a for loop to search based on the key from req.params
             const landpadArray = [];
             for (let i in response.data) {
                 let landpad = response.data[i];
-                let userRequest = req.params['0'].split('/'); // ['serial', 'c103'] ['reuse_count', '0']
                 
-                if(userRequest[0].toLowerCase() === 'full_name') { // search by full_name
-                    if(landpad.full_name.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ landpad });
+                if(searchBy.toLowerCase() === 'full_name') { // search by full_name
+                    if(landpad.full_name.toUpperCase() === searchVal.toUpperCase()) {
+                        landpadArray.push(landpad);
                     }
-                } else if(userRequest[0].toLowerCase() === 'id') { // search by id
-                    if(landpad.id.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ landpad });
+                } else if(searchBy.toLowerCase() === 'id') { // search by id
+                    if(landpad.id.toUpperCase() === searchVal.toUpperCase()) {
+                        landpadArray.push(landpad);
                     }
-                } else if(userRequest[0].toLowerCase() === 'region') { // search by region
-                    if(landpad.region.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ landpad });
+                } else if(searchBy.toLowerCase() === 'region') { // search by region
+                    if(landpad.region.toUpperCase() === searchVal.toUpperCase()) {
+                        landpadArray.push(landpad);
                     }
-                }else if (userRequest[0].toLowerCase() === 'landing_attempts') { // search by landing_attempts
-                    let landAttempts = parseInt(userRequest[1]);
+                }else if (searchBy.toLowerCase() === 'landing_attempts') { // search by landing_attempts
+                    let landAttempts = parseInt(searchVal);
                     if (landpad.landing_attempts === landAttempts) {
                         landpadArray.push(landpad);
                     }
-                } else if (userRequest[0].toLowerCase() === 'type') { // search by type
-                    if (landpad.type === userRequest[1]) {
+                } else if (searchBy.toLowerCase() === 'type') { // search by type
+                    if (landpad.type === searchVal) {
                         landpadArray.push(landpad);
                     }
                 } else {
@@ -473,7 +472,7 @@ app.get('/landpads/*', function (req, res) {
             }
             
             if (landpadArray.length > 0) {
-                return res.json({ landpads: landpadArray });
+                return res.render('landpads', { landpads: landpadArray, searchBy, searchVal });
             } else {
                 return res.json({ message: 'No matching landpads.' });
             }
