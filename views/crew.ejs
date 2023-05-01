@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crew</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+
+<body>
+    <div class="content columns mt-2 mb-2">
+        <div class="column"></div>
+        <section class="column is-flex-grow-2"> <!-- hero is-fullheight -->
+            <h1>Crew</h1>
+            <% if (searchBy) { %>
+                <h4><%= searchBy %> = <%= searchVal %></h4>
+            <% } %>
+            <% crew.forEach((mem) => { %>
+                <hr />
+                <div class="card">
+                    <div class="card-content">
+                        <div class="content">
+                            <p class="i-5">
+                                <div class="card">
+                                    <div class="card-image">
+                                        <figure class="image is-4by3">
+                                            <img src="<%= mem.image %>" alt="Image">
+                                        </figure>
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="media">
+                                      
+                                            <div class="media-content">
+                                                <p class="title is-4"><%= mem.name %></p>
+                                                <p class="subtitle is-6">
+                                                    <span class="has-text-weight-medium"><a href="<%= mem.wikipedia %>">Wikipedia</a></span><br />
+                                                    <span class="has-text-weight-medium">Agency: </span><%= mem.agency %><br />
+                                                    <span class="has-text-weight-medium">Status: </span><%= mem.status %><br />
+                                                    <span class="has-text-weight-medium">Launches: </span><br />
+                                                    <% if (mem.launches.length > 0) { %>
+                                                        <ul>
+                                                            <% mem.launches.forEach((launch) => { %>
+                                                                <li><%= launch %></li>
+                                                            <% }); %>
+                                                        </ul>
+                                                    <% } %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </section>
+        <div class="column"></div>
+    </div>
+</body>
+
+</html>

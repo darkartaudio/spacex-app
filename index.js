@@ -33,7 +33,7 @@ app.get('/capsules', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/capsules')
         .then(function (response) {
             // handle success
-            res.render('capsules', { capsules: response.data });
+            res.render('capsules', { capsules: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -127,7 +127,7 @@ app.get('/cores', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/cores')
         .then(function (response) {
             // handle success
-            res.render('cores', { cores: response.data });
+            res.render('cores', { cores: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -170,7 +170,6 @@ app.get('/cores/*', function (req, res) {
             // run a for loop to search based on the key from req.params
             for (let i in response.data) {
                 let core = response.data[i];
-                let userRequest = req.params['0'].split('/'); // ['serial', 'c103'] ['reuse_count', '0']
                 
                 if(searchBy.toLowerCase() === 'serial') { // search by serial
                     if(core.serial.toUpperCase() === searchVal.toUpperCase()) {
@@ -211,7 +210,7 @@ app.get('/crew', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/crew')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            res.render('crew', { crew: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -219,27 +218,89 @@ app.get('/crew', function (req, res) {
 });
 
 // Return a crew member by Name
-app.get('/crew/:name', function (req, res) {
+// app.get('/crew/:name', function (req, res) {
+//     axios.get('https://api.spacexdata.com/v4/crew')
+//         .then(function (response) {
+//             // handle success
+//             let found = false;
+
+//             for (let i in response.data) {
+//                 let crewmem = response.data[i];
+//                 // console.log(crewmem.name, req.params.name);
+
+//                 if (crewmem.name === req.params.name) {
+//                     res.json({ data: response.data[i] });
+//                     found = true;
+//                 }
+//             }
+//             if (!found) {
+//                 res.json({ data: 'Crew member does not exist.' });
+//             }
+//         })
+//         .catch(function (error) {
+//             res.json({ message: 'Data not found. Please try again later.' });
+//         });
+// });
+
+// Return a single core by Serial
+// app.get('/cores/:serial', function (req, res) {
+//     axios.get('https://api.spacexdata.com/v4/cores')
+//         .then(function (response) {
+//             // handle success
+//             let found = false;
+
+//             for (let i in response.data) {
+//                 let core = response.data[i];
+
+//                 if (core.serial === req.params.serial.toUpperCase()) {
+//                     res.json({ data: response.data[i] });
+//                     found = true;
+//                 }
+//             }
+//             if (!found) {
+//                 res.json({ data: 'Core does not exist.' });
+//             }
+//         })
+//         .catch(function (error) {
+//             res.json({ message: 'Data not found. Please try again later.' });
+//         });
+// });
+
+// Return crew by Parameter
+app.get('/crew/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/crew')
         .then(function (response) {
-            // handle success
-            let found = false;
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
+            const crewArray = [];
 
+            // run a for loop to search based on the key from req.params
             for (let i in response.data) {
-                let crewmem = response.data[i];
-                // console.log(crewmem.name, req.params.name);
-
-                if (crewmem.name === req.params.name) {
-                    res.json({ data: response.data[i] });
-                    found = true;
+                let crew = response.data[i];
+                
+                if(searchBy.toLowerCase() === 'name') { // search by name
+                    if(crew.name.toUpperCase() === searchVal.toUpperCase()) {
+                        crewArray.push(crew);
+                    }
+                } else if(searchBy.toLowerCase() === 'agency') { // search by agency
+                    if(crew.agency.toUpperCase() === searchVal.toUpperCase()) {
+                        crewArray.push(crew);
+                    }
+                } else if (searchBy.toLowerCase() === 'status') { // search by status
+                    if(crew.status.toUpperCase() === searchVal.toUpperCase()) {
+                        crewArray.push(crew);
+                    }
+                } else {
+                    return res.json({ message: 'Invalid key.' });
                 }
             }
-            if (!found) {
-                res.json({ data: 'Crew member does not exist.' });
+            
+            if (crewArray.length > 0) {
+                return res.render('crew', { crew: crewArray, searchBy, searchVal });
+            } else {
+                return res.json({ message: 'No matching crew.' });
             }
-        })
-        .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
         });
 });
 

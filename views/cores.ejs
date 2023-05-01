@@ -15,7 +15,9 @@
         <div class="column"></div>
         <section class="column is-flex-grow-2"> <!-- hero is-fullheight -->
             <h1>Cores</h1>
-
+            <% if (searchBy) { %>
+                <h4><%= searchBy %> = <%= searchVal %></h4>
+            <% } %>
             <% cores.forEach((core) => { %>
                 <div class="card">
                     <div class="card-content">
