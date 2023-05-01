@@ -726,7 +726,8 @@ app.get('/roadster', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/roadster')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            console.log(response.data);
+            res.render('roadster', { roadster: response.data });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
