@@ -365,10 +365,6 @@ app.get('/dragons/*', function (req, res) {
                     if (dragon.crew_capacity === crewCap) {
                         dragonArray.push(dragon);
                     }
-                } else if (searchBy.toLowerCase() === 'status') { // search by status
-                    if (dragon.status === searchVal) {
-                        dragonArray.push(dragon);
-                    }
                 } else if (searchBy.toLowerCase() === 'type') { // search by type
                     if (dragon.type === searchVal) {
                         dragonArray.push(dragon);
@@ -394,7 +390,7 @@ app.get('/history', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/history')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            res.render('history', { history: response.data });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
