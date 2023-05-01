@@ -483,7 +483,7 @@ app.get('/launches', function (req, res) {
     axios.get('https://api.spacexdata.com/v5/launches')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            res.render('launches', { launches: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -518,35 +518,30 @@ app.get('/launches', function (req, res) {
 app.get('/launches/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/launches')
         .then(function (response) {
-            // print req.params, API response
-            // console.log('req.params', req.params); // print an object
-            // console.log('response', response.data); // print an array of launches
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
 
             // run a for loop to search based on the key from req.params
             const launchArray = [];
             for (let i in response.data) {
                 let launch = response.data[i];
-                let userRequest = req.params['0'].split('/'); // ['serial', 'c103'] ['reuse_count', '0']
                 
-                if(userRequest[0].toLowerCase() === 'name') { // search by name
-                    if(launch.name.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ launch });
+                if(searchBy.toLowerCase() === 'name') { // search by name
+                    if(launch.name.toUpperCase() === searchVal.toUpperCase()) {
+                        launchArray.push(launch);
                     }
-                } else if(userRequest[0].toLowerCase() === 'id') { // search by id
-                    if(launch.id.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ launch });
+                } else if(searchBy.toLowerCase() === 'id') { // search by id
+                    if(launch.id.toUpperCase() === searchVal.toUpperCase()) {
+                        launchArray.push(launch);
                     }
-                } else if(userRequest[0].toLowerCase() === 'region') { // search by region
-                    if(launch.region.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ launch });
-                    }
-                } else if (userRequest[0].toLowerCase() === 'flight_number') { // search by flight_number
-                    let flightNumber = parseInt(userRequest[1]);
+                } else if (searchBy.toLowerCase() === 'flight_number') { // search by flight_number
+                    let flightNumber = parseInt(searchVal);
                     if (launch.flight_number === flightNumber) {
                         launchArray.push(launch);
                     }
-                } else if (userRequest[0].toLowerCase() === 'success') { // search by success
-                    if ((launch.success === true && userRequest[1].toLowerCase() === 'true') || (launch.success === false && userRequest[1].toLowerCase() === 'false')) {
+                } else if (searchBy.toLowerCase() === 'success') { // search by success
+                    if ((launch.success === true && searchVal.toLowerCase() === 'true') || (launch.success === false && userRequest[1].toLowerCase() === 'false')) {
                         launchArray.push(launch);
                     }
                 } else {
@@ -555,7 +550,7 @@ app.get('/launches/*', function (req, res) {
             }
             
             if (launchArray.length > 0) {
-                return res.json({ launches: launchArray });
+                res.render('launches', { launches: launchArray, searchBy, searchVal });
             } else {
                 return res.json({ message: 'No matching launches.' });
             }

@@ -20,7 +20,7 @@
 <body>
     <div class="content columns mt-2 mb-2">
         <div class="column"></div>
-        <section class="column is-flex-grow-2"> <!-- hero is-fullheight -->
+        <section class="column is-flex-grow-2">
             <h1>Dragons</h1>
             <% if (searchBy) { %>
                 <h4><%= searchBy %> = <%= searchVal %></h4>
@@ -34,7 +34,7 @@
                                 <div class="card">
                                     <div class="card-image">
                                         <figure class="image is-4by3">
-                                            <img src="<%= dragon.flickr_images[0] %>" alt="Image">
+                                            <img src="<%= dragon.flickr_images[0] %>" alt="dragon">
                                         </figure>
                                     </div>
                                     <div class="card-content">
