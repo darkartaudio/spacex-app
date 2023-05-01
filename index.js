@@ -308,7 +308,6 @@ app.get('/dragons', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/dragons')
         .then(function (response) {
             // handle success
-            console.log(response.data[1].thrusters);
             res.render('dragons', { dragons: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
@@ -344,39 +343,38 @@ app.get('/dragons', function (req, res) {
 app.get('/dragons/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/dragons')
         .then(function (response) {
-            // print req.params, API response
-            // console.log('req.params', req.params); // print an object
-            // console.log('response', response.data); // print an array of dragons
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
 
             // run a for loop to search based on the key from req.params
             const dragonArray = [];
             for (let i in response.data) {
                 let dragon = response.data[i];
-                let userRequest = req.params['0'].split('/'); // ['serial', 'c103'] ['reuse_count', '0']
                 
-                if(userRequest[0].toLowerCase() === 'name') { // search by name
-                    if(dragon.name.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ dragon });
+                if(searchBy.toLowerCase() === 'name') { // search by name
+                    if(dragon.name.toUpperCase() === searchVal.toUpperCase()) {
+                        dragonArray.push(dragon);
                     }
-                } else if(userRequest[0].toLowerCase() === 'id') { // search by id
-                    if(dragon.id.toUpperCase() === userRequest[1].toUpperCase()) {
-                        return res.json({ dragon });
+                } else if(searchBy.toLowerCase() === 'id') { // search by id
+                    if(dragon.id.toUpperCase() === searchVal.toUpperCase()) {
+                        dragonArray.push(dragon);
                     }
-                } else if (userRequest[0].toLowerCase() === 'crew_capacity') { // search by crew_capacity
-                    let crewCap = parseInt(userRequest[1]);
+                } else if (searchBy.toLowerCase() === 'crew_capacity') { // search by crew_capacity
+                    let crewCap = parseInt(searchVal);
                     if (dragon.crew_capacity === crewCap) {
                         dragonArray.push(dragon);
                     }
-                } else if (userRequest[0].toLowerCase() === 'status') { // search by status
-                    if (dragon.status === userRequest[1]) {
+                } else if (searchBy.toLowerCase() === 'status') { // search by status
+                    if (dragon.status === searchVal) {
                         dragonArray.push(dragon);
                     }
-                } else if (userRequest[0].toLowerCase() === 'type') { // search by type
-                    if (dragon.type === userRequest[1]) {
+                } else if (searchBy.toLowerCase() === 'type') { // search by type
+                    if (dragon.type === searchVal) {
                         dragonArray.push(dragon);
                     }
-                } else if (userRequest[0].toLowerCase() === 'active') { // search by active
-                    if ((dragon.active === true && userRequest[1].toLowerCase() === 'true') || (dragon.active === false && userRequest[1].toLowerCase() === 'false')) {
+                } else if (searchBy.toLowerCase() === 'active') { // search by active
+                    if ((dragon.active === true && searchVal.toLowerCase() === 'true') || (dragon.active === false && searchVal.toLowerCase() === 'false')) {
                         dragonArray.push(dragon);
                     }
                 } else {
@@ -385,7 +383,7 @@ app.get('/dragons/*', function (req, res) {
             }
             
             if (dragonArray.length > 0) {
-                return res.json({ dragons: dragonArray });
+                return res.render('dragons', { dragons: dragonArray, searchBy, searchVal });
             } else {
                 return res.json({ message: 'No matching dragons.' });
             }
