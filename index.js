@@ -817,7 +817,8 @@ app.get('/ships', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/ships')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            console.log(response.data);
+            res.render('ships', { ships: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -825,26 +826,66 @@ app.get('/ships', function (req, res) {
 });
 
 // Return a ship by Name
-app.get('/ships/:name', function (req, res) {
+// app.get('/ships/:name', function (req, res) {
+//     axios.get('https://api.spacexdata.com/v4/ships')
+//         .then(function (response) {
+//             // handle success
+//             let found = false;
+
+//             for (let i in response.data) {
+//                 let ship = response.data[i];
+
+//                 if (ship.name === req.params.name) {
+//                     res.json({ data: response.data[i] });
+//                     found = true;
+//                 }
+//             }
+//             if (!found) {
+//                 res.json({ data: 'Ship does not exist.' });
+//             }
+//         })
+//         .catch(function (error) {
+//             res.json({ message: 'Data not found. Please try again later.' });
+//         });
+// });
+app.get('/ships/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/ships')
         .then(function (response) {
-            // handle success
-            let found = false;
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
 
+            // run a for loop to search based on the key from req.params
+            const shipArray = [];
             for (let i in response.data) {
                 let ship = response.data[i];
-
-                if (ship.name === req.params.name) {
-                    res.json({ data: response.data[i] });
-                    found = true;
+                
+                if(searchBy.toLowerCase() === 'name') { // search by name
+                    if(ship.name.toUpperCase() === searchVal.toUpperCase()) {
+                        shipArray.push(ship);
+                    }
+                } else if(searchBy.toLowerCase() === 'id') { // search by id
+                    if(ship.id.toUpperCase() === searchVal.toUpperCase()) {
+                        shipArray.push(ship);
+                    }
+                } else if (searchBy.toLowerCase() === 'type') { // search by type
+                    if (ship.type.toUpperCase() === searchVal.toUpperCase()) {
+                        shipArray.push(ship);
+                    }
+                } else if (searchBy.toLowerCase() === 'active') { // search by active
+                    if ((ship.active === true && searchVal.toLowerCase() === 'true') || (ship.active === false && searchVal.toLowerCase() === 'false')) {
+                        shipArray.push(ship);
+                    }
+                } else {
+                    return res.json({ message: 'Invalid key.' });
                 }
             }
-            if (!found) {
-                res.json({ data: 'Ship does not exist.' });
+            
+            if (shipArray.length > 0) {
+                return res.render('ships', { ships: shipArray, searchBy, searchVal });
+            } else {
+                return res.json({ message: 'No matching ships.' });
             }
-        })
-        .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
         });
 });
 
