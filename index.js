@@ -793,7 +793,7 @@ app.get('/rockets/*', function (req, res) {
                         rocketArray.push(rocket);
                     }
                 } else if (searchBy.toLowerCase() === 'type') { // search by type
-                    if (rocket.type === searchVal) {
+                    if (rocket.type.toUpperCase() === searchVal.toUpperCase()) {
                         rocketArray.push(rocket);
                     }
                 } else if (searchBy.toLowerCase() === 'active') { // search by active
@@ -817,7 +817,6 @@ app.get('/ships', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/ships')
         .then(function (response) {
             // handle success
-            console.log(response.data);
             res.render('ships', { ships: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
@@ -893,7 +892,7 @@ app.get('/starlink', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/starlink')
         .then(function (response) {
             // handle success
-            res.json({ data: response.data });
+            res.render('starlink', { starlink: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
             res.json({ message: 'Data not found. Please try again later.' });
@@ -901,26 +900,66 @@ app.get('/starlink', function (req, res) {
 });
 
 // Return a single payload by ID
-app.get('/starlink/:id', function (req, res) {
+// app.get('/starlink/:id', function (req, res) {
+//     axios.get('https://api.spacexdata.com/v4/starlink')
+//         .then(function (response) {
+//             // handle success
+//             let found = false;
+
+//             for (let i in response.data) {
+//                 let satellite = response.data[i];
+
+//                 if (satellite.id === req.params.id) {
+//                     res.json({ data: response.data[i] });
+//                     found = true;
+//                 }
+//             }
+//             if (!found) {
+//                 res.json({ data: 'Satellite does not exist.' });
+//             }
+//         })
+//         .catch(function (error) {
+//             res.json({ message: 'Data not found. Please try again later.' });
+//         });
+// });
+app.get('/starlink/*', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/starlink')
         .then(function (response) {
-            // handle success
-            let found = false;
+            let userRequest = req.params['0'].split('/');
+            let searchBy = userRequest[0];
+            let searchVal = userRequest[1];
 
+            // run a for loop to search based on the key from req.params
+            const starlinkArray = [];
             for (let i in response.data) {
-                let satellite = response.data[i];
-
-                if (satellite.id === req.params.id) {
-                    res.json({ data: response.data[i] });
-                    found = true;
+                let starlink = response.data[i];
+                
+                if(searchBy.toLowerCase() === 'id') { // search by id
+                    if(starlink.id.toUpperCase() === searchVal.toUpperCase()) {
+                        starlinkArray.push(starlink);
+                    }
+                } else if (searchBy.toLowerCase() === 'version') { // search by version
+                    if (starlink.version) {
+                        if (starlink.version.toUpperCase() === searchVal.toUpperCase()) {
+                            starlinkArray.push(starlink);
+                        }
+                    }
+                } else if (searchBy.toLowerCase() === 'launch') { // search by launch
+                    if (starlink.launch) {
+                        if (starlink.launch.toUpperCase() === searchVal.toUpperCase()) {
+                            starlinkArray.push(starlink);
+                        }
+                    }
+                } else {
+                    return res.json({ message: 'Invalid key.' });
                 }
             }
-            if (!found) {
-                res.json({ data: 'Satellite does not exist.' });
+            
+            if (starlinkArray.length > 0) {
+                return res.render('starlink', { starlink: starlinkArray, searchBy, searchVal });
+            } else {
+                return res.json({ message: 'No matching starlink.' });
             }
-        })
-        .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
         });
 });
 
