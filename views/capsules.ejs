@@ -17,30 +17,34 @@
             <h1>Capsules</h1>
             <% if (searchBy) { %>
                 <h4><%= searchBy %> = <%= searchVal %></h4>
-            <% } %>
-            <% capsules.forEach((capsule) => { %>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="content mb-0">
-                            <p class="title is-4">
-                                <%= capsule.serial %>
-                            </p>
-                        </div>
-                    
-                        <div class="content">
-                            <p class="i-5">
-                                <span class="has-text-weight-medium">Type: </span><%= capsule.type %><br />
-                                <span class="has-text-weight-medium">Status: </span><%= capsule.status %><br />
-                                <span class="has-text-weight-medium">Last Update: </span><%= capsule.last_update %><br />
-                                <span class="has-text-weight-medium">Reuse Count: </span><%= capsule.reuse_count %><br />
-                                <span class="has-text-weight-medium">Water Landings: </span><%= capsule.water_landings %><br />
-                                <span class="has-text-weight-medium">Land Landings: </span><%= capsule.land_landings %><br />
-                            </p>
+                <% if (message) { %>
+                    <h3><%= message %></h3>
+                <% } else { %>
+                <% } %>
+                <% capsules.forEach((capsule) => { %>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="content mb-0">
+                                <p class="title is-4">
+                                    <%= capsule.serial %>
+                                </p>
+                            </div>
+                        
+                            <div class="content">
+                                <p class="i-5">
+                                    <span class="has-text-weight-medium">Type: </span><%= capsule.type %><br />
+                                    <span class="has-text-weight-medium">Status: </span><%= capsule.status %><br />
+                                    <span class="has-text-weight-medium">Last Update: </span><%= capsule.last_update %><br />
+                                    <span class="has-text-weight-medium">Reuse Count: </span><%= capsule.reuse_count %><br />
+                                    <span class="has-text-weight-medium">Water Landings: </span><%= capsule.water_landings %><br />
+                                    <span class="has-text-weight-medium">Land Landings: </span><%= capsule.land_landings %><br />
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            <% }); %>
+                <% }); %>
+            <% } %>
         </section>
         <div class="column"></div>
     </div>

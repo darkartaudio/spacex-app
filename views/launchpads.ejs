@@ -25,66 +25,70 @@
             <% if (searchBy) { %>
                 <h4><%= searchBy %> = <%= searchVal %></h4>
             <% } %>
-            <% launchpads.forEach((launchpad) => { %>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="content">
-                            <p class="i-5">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                            <img src="<%= launchpad.images.large[0] %>" alt="launchpad">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="media">
-                                            <div class="media-content">
-                                                <p class="title is-4"><%= launchpad.full_name %> (<%= launchpad.name %>)</p>
-                                                <p class="subtitle is-6">
-                                                    <section>
-                                                        <p class="subtitle is-size-6">
-                                                            <%= launchpad.details %>
-                                                        </p>
-                                                    </section>
-                                                    <span class="has-text-weight-medium"><a href="<%= launchpad.wikipedia %>">Wikipedia</a></span><br />
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Images:</span><br />
+            <% if (message) { %>
+                <h3><%= message %></h3>
+            <% } else { %>
+                <% launchpads.forEach((launchpad) => { %>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="content">
+                                <p class="i-5">
+                                    <div class="card">
+                                        <div class="card-image">
+                                            <figure class="image is-4by3">
+                                                <img src="<%= launchpad.images.large[0] %>" alt="launchpad">
+                                            </figure>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="media">
+                                                <div class="media-content">
+                                                    <p class="title is-4"><%= launchpad.full_name %> (<%= launchpad.name %>)</p>
+                                                    <p class="subtitle is-6">
+                                                        <section>
+                                                            <p class="subtitle is-size-6">
+                                                                <%= launchpad.details %>
+                                                            </p>
+                                                        </section>
+                                                        <span class="has-text-weight-medium"><a href="<%= launchpad.wikipedia %>">Wikipedia</a></span><br />
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Images:</span><br />
+                                                            <ul class="is-unstyled">
+                                                                <% launchpad.images.large.forEach((i) => { %>
+                                                                    <li><a href="<%= i %>">image</a></li>
+                                                                <% }); %>
+                                                            </ul>
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Status: </span><%= launchpad.status %><br />
+                                                        <span class="has-text-weight-medium">Locality: </span><%= launchpad.locality %><br />
+                                                        <span class="has-text-weight-medium">Region: </span><%= launchpad.region %><br />
+                                                        <span class="has-text-weight-medium">Timezone: </span><%= launchpad.timezone %><br />
+                                                        <span class="has-text-weight-medium">GPS (latitude, longitude): </span><%= launchpad.latitude %>, <%= launchpad.longitude %><br />
+                                                        <span class="has-text-weight-medium">Landing Attemps: </span><%= launchpad.landing_attempts %><br />
+                                                        <span class="has-text-weight-medium">Landing Successes: </span><%= launchpad.landing_successes %><br />
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Rockets: </span><br />
                                                         <ul class="is-unstyled">
-                                                            <% launchpad.images.large.forEach((i) => { %>
-                                                                <li><a href="<%= i %>">image</a></li>
+                                                            <% launchpad.rockets.forEach((rocket) => { %>
+                                                                <li><%= rocket %></li>
                                                             <% }); %>
                                                         </ul>
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Status: </span><%= launchpad.status %><br />
-                                                    <span class="has-text-weight-medium">Locality: </span><%= launchpad.locality %><br />
-                                                    <span class="has-text-weight-medium">Region: </span><%= launchpad.region %><br />
-                                                    <span class="has-text-weight-medium">Timezone: </span><%= launchpad.timezone %><br />
-                                                    <span class="has-text-weight-medium">GPS (latitude, longitude): </span><%= launchpad.latitude %>, <%= launchpad.longitude %><br />
-                                                    <span class="has-text-weight-medium">Landing Attemps: </span><%= launchpad.landing_attempts %><br />
-                                                    <span class="has-text-weight-medium">Landing Successes: </span><%= launchpad.landing_successes %><br />
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Rockets: </span><br />
-                                                    <ul class="is-unstyled">
-                                                        <% launchpad.rockets.forEach((rocket) => { %>
-                                                            <li><%= rocket %></li>
-                                                        <% }); %>
-                                                    </ul>
-                                                    <span class="has-text-weight-medium">Launches: </span><br />
-                                                    <ul class="is-unstyled">
-                                                        <% launchpad.launches.forEach((launch) => { %>
-                                                            <li><%= launch %></li>
-                                                        <% }); %>
-                                                    </ul>
-                                                </p>
+                                                        <span class="has-text-weight-medium">Launches: </span><br />
+                                                        <ul class="is-unstyled">
+                                                            <% launchpad.launches.forEach((launch) => { %>
+                                                                <li><%= launch %></li>
+                                                            <% }); %>
+                                                        </ul>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </p>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <% }); %>
+                <% }); %>
+            <% } %>
         </section>
         <div class="column"></div>
     </div>

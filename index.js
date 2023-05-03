@@ -33,10 +33,10 @@ app.get('/capsules', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/capsules')
         .then(function (response) {
             // handle success
-            res.render('capsules', { capsules: response.data, searchBy: '', searchVal: '' });
+            res.render('capsules', { message: '', capsules: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('capsules', { message: 'Data not found. Please try again later.', capsules: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -110,15 +110,15 @@ app.get('/capsules/*', function (req, res) {
                         capsuleArray.push(capsule);
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('capsules', { capsules: capsuleArray, message: 'Invalid key.', searchBy, searchVal });
                 }
             }
             
             if (capsuleArray.length > 0) {
                 // return res.json({ capsules: capsuleArray });
-                res.render('capsules', { capsules: capsuleArray, searchBy, searchVal });
+                res.render('capsules', { message: '', capsules: capsuleArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching capsules.' });
+                return res.render('capsules', { message: 'No matching capsules.', capsules: capsuleArray, searchBy, searchVal });
             }
         });
 });
@@ -127,10 +127,10 @@ app.get('/cores', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/cores')
         .then(function (response) {
             // handle success
-            res.render('cores', { cores: response.data, searchBy: '', searchVal: '' });
+            res.render('cores', { message: '', cores: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('cores', { message: 'Data not found. Please try again later.', cores: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -194,14 +194,14 @@ app.get('/cores/*', function (req, res) {
                         coreArray.push(core);
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('cores', { message: 'Invalid key.', cores: coreArray, searchBy, searchVal });
                 }
             }
             
             if (coreArray.length > 0) {
-                return res.render('cores', { cores: coreArray, searchBy, searchVal });
+                return res.render('cores', { message: '', cores: coreArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching cores.' });
+                return res.render('cores', { message: 'No matching cores.', cores: coreArray, searchBy, searchVal });
             }
         });
 });
@@ -210,10 +210,10 @@ app.get('/crew', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/crew')
         .then(function (response) {
             // handle success
-            res.render('crew', { crew: response.data, searchBy: '', searchVal: '' });
+            res.render('crew', { message: '', crew: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('crew', { message: 'Data not found. Please try again later.', crew: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -292,14 +292,14 @@ app.get('/crew/*', function (req, res) {
                         crewArray.push(crew);
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('crew', { message: 'Invalid key.', crew: crewArray, searchBy, searchVal });
                 }
             }
             
             if (crewArray.length > 0) {
-                return res.render('crew', { crew: crewArray, searchBy, searchVal });
+                return res.render('crew', { message: '', crew: crewArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching crew.' });
+                return res.render('crew', { message: 'No matching crew.', crew: crewArray, searchBy, searchVal });
             }
         });
 });
@@ -308,10 +308,10 @@ app.get('/dragons', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/dragons')
         .then(function (response) {
             // handle success
-            res.render('dragons', { dragons: response.data, searchBy: '', searchVal: '' });
+            res.render('dragons', { message: '', dragons: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('dragons', { message: 'Data not found. Please try again later.', dragons: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -374,14 +374,14 @@ app.get('/dragons/*', function (req, res) {
                         dragonArray.push(dragon);
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('dragons', { message: 'Invalid key.', dragons: dragonArray, searchBy, searchVal });
                 }
             }
             
             if (dragonArray.length > 0) {
-                return res.render('dragons', { dragons: dragonArray, searchBy, searchVal });
+                return res.render('dragons', { message: '', dragons: dragonArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching dragons.' });
+                return res.render('dragons', { message: 'No matching dragons.', dragons: dragonArray, searchBy, searchVal });
             }
         });
 });
@@ -390,10 +390,10 @@ app.get('/history', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/history')
         .then(function (response) {
             // handle success
-            res.render('history', { history: response.data });
+            res.render('history', { message: '', history: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('history', { message: 'Data not found. Please try again later.', history: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -401,10 +401,10 @@ app.get('/landpads', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/landpads')
         .then(function (response) {
             // handle success
-            res.render('landpads', { landpads: response.data, searchBy: '', searchVal: '' });
+            res.render('landpads', { message: '', landpads: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('landpads', { message: 'Data not found. Please try again later.', landpads: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -467,14 +467,14 @@ app.get('/landpads/*', function (req, res) {
                         landpadArray.push(landpad);
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('landpads', { message: 'Invalid key.', landpads: landpadArray, searchBy, searchVal });
                 }
             }
             
             if (landpadArray.length > 0) {
-                return res.render('landpads', { landpads: landpadArray, searchBy, searchVal });
+                return res.render('landpads', { message: '', landpads: landpadArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching landpads.' });
+                return res.render('landpads', { message: 'No matching landpads.', landpads: landpadArray, searchBy, searchVal });
             }
         });
 });
@@ -483,10 +483,10 @@ app.get('/launches', function (req, res) {
     axios.get('https://api.spacexdata.com/v5/launches')
         .then(function (response) {
             // handle success
-            res.render('launches', { launches: response.data, searchBy: '', searchVal: '' });
+            res.render('launches', { message: '', launches: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('launches', { message: 'Data not found. Please try again later.', launches: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -545,14 +545,14 @@ app.get('/launches/*', function (req, res) {
                         launchArray.push(launch);
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('launches', { message: 'Invalid key.', launches: launchArray, searchBy, searchVal });
                 }
             }
             
             if (launchArray.length > 0) {
-                res.render('launches', { launches: launchArray, searchBy, searchVal });
+                res.render('launches', { message: '', launches: launchArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching launches.' });
+                return res.render('launches', { message: 'No matching launches.', launches: launchArray, searchBy, searchVal });
             }
         });
 });
@@ -561,10 +561,10 @@ app.get('/launchpads', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/launchpads')
         .then(function (response) {
             // handle success
-            res.render('launchpads', { launchpads: response.data, searchBy: '', searchVal: '' });
+            res.render('launchpads', { message: '', launchpads: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('launchpads', { message: 'Data not found. Please try again later.', launchpads: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -617,7 +617,7 @@ app.get('/launchpads/*', function (req, res) {
                     if(launchpad.region.toUpperCase() === searchVal.toUpperCase()) {
                         launchpadArray.push(launchpad);
                     }
-                }else if (searchBy.toLowerCase() === 'launch_attempts') { // search by launch_attempts
+                } else if (searchBy.toLowerCase() === 'launch_attempts') { // search by launch_attempts
                     let launchAttempts = parseInt(searchVal);
                     if (launchpad.launch_attempts === launchAttempts) {
                         launchpadArray.push(launchpad);
@@ -627,14 +627,14 @@ app.get('/launchpads/*', function (req, res) {
                         launchpadArray.push(launchpad);
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('launchpads', { message: 'Invalid key.', launchpads: launchpadArray, searchBy, searchVal });
                 }
             }
             
             if (launchpadArray.length > 0) {
-                res.render('launchpads', { launchpads: launchpadArray, searchBy, searchVal });
+                res.render('launchpads', { message: '', launchpads: launchpadArray, searchBy, searchVal });
             } else {
-                res.json({ message: 'No matching launchpads.' });
+                res.render('launchpads', { message: 'No matching launchpads.', launchpads: launchpadArray, searchBy, searchVal });
             }
         });
 });
@@ -643,10 +643,10 @@ app.get('/payloads', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/payloads')
         .then(function (response) {
             // handle success
-            res.render('payloads', { payloads: response.data, searchBy: '', searchVal: '' });
+            res.render('payloads', { message: '', payloads: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('payloads', { message: 'Data not found. Please try again later.', payloads: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -709,14 +709,14 @@ app.get('/payloads/*', function (req, res) {
                         }
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('payloads', { message: 'Invalid key.', payloads: payloadArray, searchBy: '', searchVal: '' });
                 }
             }
             
             if (payloadArray.length > 0) {
-                return res.render('payloads', { payloads: payloadArray, searchBy, searchVal });
+                return res.render('payloads', { message: '', payloads: payloadArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching payloads.' });
+                return res.render('payloads', { message: 'No matching payloads.', payloads: payloadArray, searchBy, searchVal });
             }
         });
 });
@@ -726,10 +726,10 @@ app.get('/roadster', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/roadster')
         .then(function (response) {
             // handle success
-            res.render('roadster', { roadster: response.data });
+            res.render('roadster', { message: '', roadster: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('roadster', { message: 'Data not found. Please try again later.', searchBy: '', searchVal: '' });
         });
 });
 
@@ -737,10 +737,10 @@ app.get('/rockets', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/rockets')
         .then(function (response) {
             // handle success
-            res.render('rockets', { rockets: response.data, searchBy: '', searchVal: '' });
+            res.render('rockets', { message: '', rockets: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('rockets', { message: 'Data not found. Please try again later.', rockets: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -801,14 +801,14 @@ app.get('/rockets/*', function (req, res) {
                         rocketArray.push(rocket);
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('rockets', { message: 'Invalid key.', rockets: rocketArray, searchBy, searchVal });
                 }
             }
             
             if (rocketArray.length > 0) {
-                return res.render('rockets', { rockets: rocketArray, searchBy, searchVal });
+                return res.render('rockets', { message: '', rockets: rocketArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching rockets.' });
+                return res.render('rockets', { message: 'No matching rockets.', rockets: rocketArray, searchBy, searchVal });
             }
         });
 });
@@ -817,10 +817,10 @@ app.get('/ships', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/ships')
         .then(function (response) {
             // handle success
-            res.render('ships', { ships: response.data, searchBy: '', searchVal: '' });
+            res.render('ships', { message: '', ships: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('ships', { message: 'Data not found. Please try again later.', ships: '', searchBy: '', searchVal: '' });
         });
 });
 
@@ -876,14 +876,14 @@ app.get('/ships/*', function (req, res) {
                         shipArray.push(ship);
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('ships', { message: 'Invalid key.', ships: shipArray, searchBy, searchVal });
                 }
             }
             
             if (shipArray.length > 0) {
-                return res.render('ships', { ships: shipArray, searchBy, searchVal });
+                return res.render('ships', { message: '', ships: shipArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching ships.' });
+                return res.render('ships', { message: 'No matching ships.', ships: shipArray, searchBy, searchVal });
             }
         });
 });
@@ -892,10 +892,10 @@ app.get('/starlink', function (req, res) {
     axios.get('https://api.spacexdata.com/v4/starlink')
         .then(function (response) {
             // handle success
-            res.render('starlink', { starlink: response.data, searchBy: '', searchVal: '' });
+            res.render('starlink', { message: '', starlink: response.data, searchBy: '', searchVal: '' });
         })
         .catch(function (error) {
-            res.json({ message: 'Data not found. Please try again later.' });
+            res.render('starlink', { message: 'Data not found. Please try again later.', starlink: starlinkArray, searchBy: '', searchVal: '' });
         });
 });
 
@@ -951,14 +951,14 @@ app.get('/starlink/*', function (req, res) {
                         }
                     }
                 } else {
-                    return res.json({ message: 'Invalid key.' });
+                    return res.render('starlink', { message: 'Invalid key.', starlink: starlinkArray, searchBy, searchVal });
                 }
             }
             
             if (starlinkArray.length > 0) {
-                return res.render('starlink', { starlink: starlinkArray, searchBy, searchVal });
+                return res.render('starlink', { message: '', starlink: starlinkArray, searchBy, searchVal });
             } else {
-                return res.json({ message: 'No matching starlink.' });
+                return res.render('starlink', { message: 'No matching starlink.', starlink: starlinkArray, searchBy, searchVal });
             }
         });
 });
@@ -1002,8 +1002,7 @@ app.get('/search', (req, res) => {
 });
 
 app.get('/:input', function (req, res) {
-    // console.log('req.params', req.params);
-    res.json({ message: `There is no data for /${req.params.input}` });
+    res.render('error', { message: `There is no data for /${req.params.input}` });
 });
 
 const PORT = process.env.PORT || 8000;

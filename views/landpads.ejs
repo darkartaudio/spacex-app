@@ -25,62 +25,66 @@
             <% if (searchBy) { %>
                 <h4><%= searchBy %> = <%= searchVal %></h4>
             <% } %>
-            <% landpads.forEach((landpad) => { %>
-                <hr />
-                <div class="card">
-                    <div class="card-content">
-                        <div class="content">
-                            <p class="i-5">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                            <img src="<%= landpad.images.large[0] %>" alt="landpad">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="media">
-                                      
-                                            <div class="media-content">
-                                                <p class="title is-4"><%= landpad.full_name %> (<%= landpad.name %>)</p>
-                                                <p class="subtitle is-6">
-                                                    <section>
-                                                        <p class="subtitle is-size-6">
-                                                            <%= landpad.details %>
-                                                        </p>
-                                                    </section>
-                                                    <span class="has-text-weight-medium"><a href="<%= landpad.wikipedia %>">Wikipedia</a></span><br />
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Images:</span><br />
+            <% if (message) { %>
+                <h3><%= message %></h3>
+            <% } else { %>
+                <% landpads.forEach((landpad) => { %>
+                    <hr />
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="content">
+                                <p class="i-5">
+                                    <div class="card">
+                                        <div class="card-image">
+                                            <figure class="image is-4by3">
+                                                <img src="<%= landpad.images.large[0] %>" alt="landpad">
+                                            </figure>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="media">
+                                        
+                                                <div class="media-content">
+                                                    <p class="title is-4"><%= landpad.full_name %> (<%= landpad.name %>)</p>
+                                                    <p class="subtitle is-6">
+                                                        <section>
+                                                            <p class="subtitle is-size-6">
+                                                                <%= landpad.details %>
+                                                            </p>
+                                                        </section>
+                                                        <span class="has-text-weight-medium"><a href="<%= landpad.wikipedia %>">Wikipedia</a></span><br />
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Images:</span><br />
+                                                            <ul class="is-unstyled">
+                                                                <% landpad.images.large.forEach((i) => { %>
+                                                                    <li><a href="<%= i %>">image</a></li>
+                                                                <% }); %>
+                                                            </ul>
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Type: </span><%= landpad.type %><br />
+                                                        <span class="has-text-weight-medium">Status: </span><%= landpad.status %><br />
+                                                        <span class="has-text-weight-medium">Locality: </span><%= landpad.locality %><br />
+                                                        <span class="has-text-weight-medium">Region: </span><%= landpad.region %><br />
+                                                        <span class="has-text-weight-medium">GPS (latitude, longitude): </span><%= landpad.latitude %>, <%= landpad.longitude %><br />
+                                                        <span class="has-text-weight-medium">Landing Attemps: </span><%= landpad.landing_attempts %><br />
+                                                        <span class="has-text-weight-medium">Landing Successes: </span><%= landpad.landing_successes %><br />
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Launches: </span><br />
                                                         <ul class="is-unstyled">
-                                                            <% landpad.images.large.forEach((i) => { %>
-                                                                <li><a href="<%= i %>">image</a></li>
+                                                            <% landpad.launches.forEach((launch) => { %>
+                                                                <li><%= launch %></li>
                                                             <% }); %>
                                                         </ul>
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Type: </span><%= landpad.type %><br />
-                                                    <span class="has-text-weight-medium">Status: </span><%= landpad.status %><br />
-                                                    <span class="has-text-weight-medium">Locality: </span><%= landpad.locality %><br />
-                                                    <span class="has-text-weight-medium">Region: </span><%= landpad.region %><br />
-                                                    <span class="has-text-weight-medium">GPS (latitude, longitude): </span><%= landpad.latitude %>, <%= landpad.longitude %><br />
-                                                    <span class="has-text-weight-medium">Landing Attemps: </span><%= landpad.landing_attempts %><br />
-                                                    <span class="has-text-weight-medium">Landing Successes: </span><%= landpad.landing_successes %><br />
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Launches: </span><br />
-                                                    <ul class="is-unstyled">
-                                                        <% landpad.launches.forEach((launch) => { %>
-                                                            <li><%= launch %></li>
-                                                        <% }); %>
-                                                    </ul>
-                                                </p>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </p>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <% }); %>
+                <% }); %>
+            <% } %>
         </section>
         <div class="column"></div>
     </div>

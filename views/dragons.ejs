@@ -25,102 +25,106 @@
             <% if (searchBy) { %>
                 <h4><%= searchBy %> = <%= searchVal %></h4>
             <% } %>
-            <% dragons.forEach((dragon) => { %>
-                <hr />
-                <div class="card">
-                    <div class="card-content">
-                        <div class="content">
-                            <p class="i-5">
-                                <div class="card">
-                                    <div class="card-image">
-                                        <figure class="image is-4by3">
-                                            <img src="<%= dragon.flickr_images[0] %>" alt="dragon">
-                                        </figure>
-                                    </div>
-                                    <div class="card-content">
-                                        <div class="media">
-                                      
-                                            <div class="media-content">
-                                                <p class="title is-4"><%= dragon.name %></p>
-                                                <p class="subtitle is-6">
-                                                    <section>
-                                                        <p class="subtitle is-size-6">
-                                                            <%= dragon.description %>
-                                                        </p>
-                                                    </section>
-                                                    <span class="has-text-weight-medium"><a href="<%= dragon.wikipedia %>">Wikipedia</a></span><br />
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Images:</span><br />
+            <% if (message) { %>
+                <h3><%= message %></h3>
+            <% } else { %>
+                <% dragons.forEach((dragon) => { %>
+                    <hr />
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="content">
+                                <p class="i-5">
+                                    <div class="card">
+                                        <div class="card-image">
+                                            <figure class="image is-4by3">
+                                                <img src="<%= dragon.flickr_images[0] %>" alt="dragon">
+                                            </figure>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="media">
+                                        
+                                                <div class="media-content">
+                                                    <p class="title is-4"><%= dragon.name %></p>
+                                                    <p class="subtitle is-6">
+                                                        <section>
+                                                            <p class="subtitle is-size-6">
+                                                                <%= dragon.description %>
+                                                            </p>
+                                                        </section>
+                                                        <span class="has-text-weight-medium"><a href="<%= dragon.wikipedia %>">Wikipedia</a></span><br />
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Images:</span><br />
+                                                            <ul class="is-unstyled">
+                                                                <% dragon.flickr_images.forEach((i) => { %>
+                                                                    <li><a href="<%= i %>">image</a></li>
+                                                                <% }); %>
+                                                            </ul>
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Type: </span><%= dragon.type %><br />
+                                                        <span class="has-text-weight-medium">First Flight: </span><%= dragon.first_flight %><br />
+                                                        <span class="has-text-weight-medium">Active: </span><%= dragon.active %><br />
+                                                        <span class="has-text-weight-medium">Crew Capacity: </span><%= dragon.crew_capacity %><br />
+                                                        <span class="has-text-weight-medium">Orbit Duration (years): </span><%= dragon.orbit_duration_yr %><br />
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Sidewall Angle (degrees): </span><%= dragon.sidewall_angle_deg %><br />
+                                                        <span class="has-text-weight-medium">Diameter (m/ft): </span><%= dragon.diameter.meters %>/<%= dragon.diameter.feet %><br />
+                                                        <span class="has-text-weight-medium">Dry Mass (kg/lbs): </span><%= dragon.dry_mass_kg %>/<%= dragon.dry_mass_lb %><br />
+                                                        <span class="has-text-weight-medium">Launch Payload Mass (kg/lbs): </span><%= dragon.launch_payload_mass.kg %>/<%= dragon.launch_payload_mass.lb %><br />
+                                                        <span class="has-text-weight-medium">Launch Payload Volume (m<super>3</super>/ft<super>3</super>): </span><%= dragon.launch_payload_vol.cubic_meters %>/<%= dragon.launch_payload_vol.cubic_feet %><br />
+                                                        <span class="has-text-weight-medium">Return Payload Mass (kg/lbs): </span><%= dragon.return_payload_mass.kg %>/<%= dragon.return_payload_mass.lb %><br />
+                                                        <span class="has-text-weight-medium">Return Payload Volume (m<super>3</super>/ft<super>3</super>): </span><%= dragon.return_payload_vol.cubic_meters %>/<%= dragon.return_payload_vol.cubic_feet %><br />
+                                                        <br />
+                                                        <span class="has-text-weight-medium">Heat Shield: </span><br />
                                                         <ul class="is-unstyled">
-                                                            <% dragon.flickr_images.forEach((i) => { %>
-                                                                <li><a href="<%= i %>">image</a></li>
+                                                            <li>Material: <%= dragon.heat_shield.material %></li>
+                                                            <li>Size (meters): <%= dragon.heat_shield.size_meters %></li>
+                                                            <li>Temp (degrees): <%= dragon.heat_shield.temp_degrees %></li>
+                                                            <li>Dev Partner: <%= dragon.heat_shield.dev_partner %></li>
+                                                        </ul>
+                                                        <span class="has-text-weight-medium">Pressurized Capsule: </span><br />
+                                                            <ul class="is-unstyled">
+                                                                <li>
+                                                                    Payload Volume (m<super>3</super>/ft<super>3</super>): <%= dragon.pressurized_capsule.payload_volume.cubic_meters %>/<%= dragon.pressurized_capsule.payload_volume.cubic_feet %></li>
+                                                                </li>
+                                                            </ul>
+                                                        <span class="has-text-weight-medium">Trunk: </span><br />
+                                                            <ul class="is-unstyled">
+                                                                <li>Trunk Volume (m<super>3</super>/ft<super>3</super>): <%= dragon.trunk.trunk_volume.cubic_meters %>/<%= dragon.trunk.trunk_volume.cubic_feet %></li>
+                                                                <li>Height With Trunk (m/ft): <%= dragon.height_w_trunk.meters %>/<%= dragon.height_w_trunk.feet %></li>
+                                                                <li>Cargo:
+                                                                    <ul class="is-unstyled">
+                                                                        <li>Solar Array: <%= dragon.trunk.cargo.solar_array %></li>
+                                                                        <li>Unpressurized Cargo: <%= dragon.trunk.cargo.unpressurized_cargo %></li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        <span class="has-text-weight-medium">Thrusters: </span><br />
+                                                        <ul class="is-unstyled">
+                                                            <% dragon.thrusters.forEach((i) => { %>
+                                                                <li>
+                                                                    
+                                                                        Type: <%= i.type %><br />
+                                                                        Amount: <%= i.amount %><br />
+                                                                        Pods: <%= i.pods %><br />
+                                                                        Fuel 1: <%= i.fuel_1 %><br />
+                                                                        Fuel 2: <%= i.fuel_2 %><br />
+                                                                        ISP: <%= i.isp %><br />
+                                                                        Thurst (kN/lbf): <%= i.thrust.kN %>/<%= i.thrust.lbf %><br />
+                                                                        <br />
+                                                                </li>
                                                             <% }); %>
                                                         </ul>
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Type: </span><%= dragon.type %><br />
-                                                    <span class="has-text-weight-medium">First Flight: </span><%= dragon.first_flight %><br />
-                                                    <span class="has-text-weight-medium">Active: </span><%= dragon.active %><br />
-                                                    <span class="has-text-weight-medium">Crew Capacity: </span><%= dragon.crew_capacity %><br />
-                                                    <span class="has-text-weight-medium">Orbit Duration (years): </span><%= dragon.orbit_duration_yr %><br />
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Sidewall Angle (degrees): </span><%= dragon.sidewall_angle_deg %><br />
-                                                    <span class="has-text-weight-medium">Diameter (m/ft): </span><%= dragon.diameter.meters %>/<%= dragon.diameter.feet %><br />
-                                                    <span class="has-text-weight-medium">Dry Mass (kg/lbs): </span><%= dragon.dry_mass_kg %>/<%= dragon.dry_mass_lb %><br />
-                                                    <span class="has-text-weight-medium">Launch Payload Mass (kg/lbs): </span><%= dragon.launch_payload_mass.kg %>/<%= dragon.launch_payload_mass.lb %><br />
-                                                    <span class="has-text-weight-medium">Launch Payload Volume (m<super>3</super>/ft<super>3</super>): </span><%= dragon.launch_payload_vol.cubic_meters %>/<%= dragon.launch_payload_vol.cubic_feet %><br />
-                                                    <span class="has-text-weight-medium">Return Payload Mass (kg/lbs): </span><%= dragon.return_payload_mass.kg %>/<%= dragon.return_payload_mass.lb %><br />
-                                                    <span class="has-text-weight-medium">Return Payload Volume (m<super>3</super>/ft<super>3</super>): </span><%= dragon.return_payload_vol.cubic_meters %>/<%= dragon.return_payload_vol.cubic_feet %><br />
-                                                    <br />
-                                                    <span class="has-text-weight-medium">Heat Shield: </span><br />
-                                                    <ul class="is-unstyled">
-                                                        <li>Material: <%= dragon.heat_shield.material %></li>
-                                                        <li>Size (meters): <%= dragon.heat_shield.size_meters %></li>
-                                                        <li>Temp (degrees): <%= dragon.heat_shield.temp_degrees %></li>
-                                                        <li>Dev Partner: <%= dragon.heat_shield.dev_partner %></li>
-                                                    </ul>
-                                                    <span class="has-text-weight-medium">Pressurized Capsule: </span><br />
-                                                        <ul class="is-unstyled">
-                                                            <li>
-                                                                Payload Volume (m<super>3</super>/ft<super>3</super>): <%= dragon.pressurized_capsule.payload_volume.cubic_meters %>/<%= dragon.pressurized_capsule.payload_volume.cubic_feet %></li>
-                                                            </li>
-                                                        </ul>
-                                                    <span class="has-text-weight-medium">Trunk: </span><br />
-                                                        <ul class="is-unstyled">
-                                                            <li>Trunk Volume (m<super>3</super>/ft<super>3</super>): <%= dragon.trunk.trunk_volume.cubic_meters %>/<%= dragon.trunk.trunk_volume.cubic_feet %></li>
-                                                            <li>Height With Trunk (m/ft): <%= dragon.height_w_trunk.meters %>/<%= dragon.height_w_trunk.feet %></li>
-                                                            <li>Cargo:
-                                                                <ul class="is-unstyled">
-                                                                    <li>Solar Array: <%= dragon.trunk.cargo.solar_array %></li>
-                                                                    <li>Unpressurized Cargo: <%= dragon.trunk.cargo.unpressurized_cargo %></li>
-                                                                </ul>
-                                                            </li>
-                                                        </ul>
-                                                    <span class="has-text-weight-medium">Thrusters: </span><br />
-                                                    <ul class="is-unstyled">
-                                                        <% dragon.thrusters.forEach((i) => { %>
-                                                            <li>
-                                                                
-                                                                    Type: <%= i.type %><br />
-                                                                    Amount: <%= i.amount %><br />
-                                                                    Pods: <%= i.pods %><br />
-                                                                    Fuel 1: <%= i.fuel_1 %><br />
-                                                                    Fuel 2: <%= i.fuel_2 %><br />
-                                                                    ISP: <%= i.isp %><br />
-                                                                    Thurst (kN/lbf): <%= i.thrust.kN %>/<%= i.thrust.lbf %><br />
-                                                                    <br />
-                                                            </li>
-                                                        <% }); %>
-                                                    </ul>
-                                                </p>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </p>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <% }); %>
+                <% }); %>
+            <% } %>
         </section>
         <div class="column"></div>
     </div>

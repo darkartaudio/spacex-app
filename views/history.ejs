@@ -14,28 +14,32 @@
         <div class="column"></div>
         <section class="column is-flex-grow-2"> <!-- hero is-fullheight -->
             <h1>History Events</h1>
-            <% history.forEach((event) => { %>
-                <div class="card">
-                    <div class="card-content">
-                        <div class="media">
-                            <div class="media-content">
-                                <p class="title is-4">
-                                    <%= event.title %>
-                                    <% if (event.links.article) { %>
-                                        - <a href="<%= event.links.article %>">article</a>
-                                    <% } %>
-                                </p>
+            <% if (message) { %>
+                <h3><%= message %></h3>
+            <% } else { %>
+                <% history.forEach((event) => { %>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <p class="title is-4">
+                                        <%= event.title %>
+                                        <% if (event.links.article) { %>
+                                            - <a href="<%= event.links.article %>">article</a>
+                                        <% } %>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <%= event.details %>
+                                <br />
+                                <br />
+                                <time><%= event.event_date_utc %></time>
                             </div>
                         </div>
-                        <div class="content">
-                            <%= event.details %>
-                            <br />
-                            <br />
-                            <time><%= event.event_date_utc %></time>
-                        </div>
                     </div>
-                </div>
-            <% }); %>
+                <% }); %>
+            <% } %>
         </section>
         <div class="column"></div>
     </div>
